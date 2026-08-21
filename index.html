@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>321takes — Sua rede social como canal de vendas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#141414;
+    --paper:#FBF8F2;
+    --paper-dim:#F2EDE1;
+    --leader:#D6402C;
+    --leader-dark:#9E2E1F;
+    --amber:#C89B3C;
+    --mute:#726F68;
+    --rule:#E4DFD3;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  .display{font-family:'Bebas Neue', sans-serif; letter-spacing:0.01em;}
+  .mono{font-family:'JetBrains Mono', monospace;}
+
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1120px; margin:0 auto; padding:0 28px;}
+
+  /* ---------- top rule ---------- */
+  .top-rule{height:5px; background:linear-gradient(90deg, var(--leader), var(--amber));}
+
+  /* ---------- nav ---------- */
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 0;
+  }
+  .logo{font-family:'Bebas Neue', sans-serif; font-size:26px; letter-spacing:0.02em;}
+  .logo span{color:var(--leader);}
+  .nav-links{display:flex; gap:34px; font-size:14px; font-weight:600;}
+  .nav-links a{opacity:0.75; transition:opacity .2s;}
+  .nav-links a:hover{opacity:1;}
+  .nav-cta{
+    background:var(--ink); color:var(--paper); padding:10px 18px; border-radius:2px;
+    font-size:13px; font-weight:700; letter-spacing:0.03em;
+    transition:background .2s;
+  }
+  .nav-cta:hover{background:var(--leader-dark);}
+  @media (max-width:760px){ .nav-links{display:none;} }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding:64px 0 40px;
+    display:grid; grid-template-columns:1.15fr 0.85fr; gap:40px; align-items:center;
+  }
+  @media (max-width:900px){ .hero{grid-template-columns:1fr; padding-top:20px;} }
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:12px; font-weight:600;
+    letter-spacing:0.14em; color:var(--leader-dark); text-transform:uppercase;
+    display:flex; align-items:center; gap:10px; margin-bottom:18px;
+  }
+  .eyebrow::before{content:''; width:22px; height:1px; background:var(--leader);}
+
+  h1{
+    font-family:'Bebas Neue', sans-serif;
+    font-size:clamp(40px, 6.4vw, 76px);
+    line-height:0.96;
+    letter-spacing:0.005em;
+    margin-bottom:22px;
+  }
+  h1 em{font-style:normal; color:var(--leader);}
+
+  .hero p.sub{
+    font-size:17px; line-height:1.6; color:var(--mute); max-width:46ch; margin-bottom:30px;
+  }
+
+  .cta-row{display:flex; gap:16px; flex-wrap:wrap; align-items:center;}
+  .btn-primary{
+    background:var(--leader); color:#fff; padding:15px 26px; border-radius:2px;
+    font-weight:700; font-size:14.5px; letter-spacing:0.02em;
+    display:inline-flex; align-items:center; gap:10px;
+    transition:transform .18s ease, background .2s;
+  }
+  .btn-primary:hover{background:var(--leader-dark); transform:translateY(-1px);}
+  .btn-ghost{
+    font-weight:700; font-size:14.5px; color:var(--ink); border-bottom:2px solid var(--ink);
+    padding-bottom:3px; transition:opacity .2s;
+  }
+  .btn-ghost:hover{opacity:0.6;}
+
+  /* ---------- countdown leader (signature) ---------- */
+  .leader-wrap{display:flex; justify-content:center; align-items:center; position:relative;}
+  .leader{
+    position:relative; width:min(300px, 78vw); aspect-ratio:1/1; border-radius:50%;
+    background:radial-gradient(circle at 50% 50%, #1B1B1B 0%, var(--ink) 72%);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.06), 0 30px 60px -25px rgba(20,20,20,0.5);
+  }
+  .leader svg{position:absolute; inset:0; width:100%; height:100%;}
+  .leader .ticks{stroke:rgba(251,248,242,0.22); stroke-width:1;}
+  .leader .wipe{
+    fill:none; stroke:var(--leader); stroke-width:3;
+    stroke-dasharray:301; stroke-dashoffset:301;
+    transform-origin:50% 50%; transform:rotate(-90deg);
+    animation:wipe 4.2s linear infinite;
+  }
+  .leader .cross{stroke:rgba(251,248,242,0.35); stroke-width:1;}
+  .leader-number{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:'Bebas Neue', sans-serif; color:var(--paper);
+    font-size:96px; opacity:0; line-height:1;
+  }
+  .leader-number.action{font-size:34px; letter-spacing:0.08em; color:var(--amber);}
+  .n3{animation:showNum 4.2s ease infinite;}
+  .n2{animation:showNum 4.2s ease infinite; animation-delay:1.05s;}
+  .n1{animation:showNum 4.2s ease infinite; animation-delay:2.1s;}
+  .naction{animation:showNum 4.2s ease infinite; animation-delay:3.15s;}
+
+  @keyframes wipe{
+    0%{stroke-dashoffset:301;}
+    95%{stroke-dashoffset:0;}
+    100%{stroke-dashoffset:0;}
+  }
+  @keyframes showNum{
+    0%{opacity:0;}
+    4%{opacity:1;}
+    22%{opacity:1;}
+    27%{opacity:0;}
+    100%{opacity:0;}
+  }
+  .leader-caption{
+    text-align:center; margin-top:16px; font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:0.12em; color:var(--mute); text-transform:uppercase;
+  }
+
+  /* ---------- section shell ---------- */
+  section{padding:78px 0;}
+  .section-head{margin-bottom:44px; max-width:640px;}
+  .section-tag{
+    font-family:'JetBrains Mono', monospace; font-size:12px; font-weight:600;
+    color:var(--leader-dark); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:10px;
+  }
+  h2{font-family:'Bebas Neue', sans-serif; font-size:clamp(30px,4vw,44px); line-height:1.02;}
+  .section-head p{color:var(--mute); margin-top:12px; font-size:15.5px; line-height:1.6;}
+
+  .rule{height:1px; background:var(--rule); border:none;}
+
+  /* ---------- process (takes) ---------- */
+  .takes{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+  @media (max-width:800px){ .takes{grid-template-columns:1fr;} }
+  .take-card{
+    background:#fff; border:1px solid var(--rule); border-radius:3px; padding:30px 26px;
+    position:relative; overflow:hidden;
+  }
+  .take-card::before{
+    content:''; position:absolute; top:0; left:0; width:100%; height:4px;
+    background:var(--leader);
+  }
+  .take-label{
+    font-family:'JetBrains Mono', monospace; font-size:12px; font-weight:700; color:var(--leader);
+    letter-spacing:0.1em; margin-bottom:14px; display:block;
+  }
+  .take-card h3{font-family:'Bebas Neue', sans-serif; font-size:23px; margin-bottom:10px; letter-spacing:0.02em;}
+  .take-card p{font-size:14.5px; color:var(--mute); line-height:1.6;}
+
+  /* ---------- diferenciais dark band ---------- */
+  .band{background:var(--ink); color:var(--paper);}
+  .band .section-tag{color:var(--amber);}
+  .band .section-head p{color:#B9B4A8;}
+  .diff-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(251,248,242,0.12); border-radius:3px; overflow:hidden;}
+  @media (max-width:800px){ .diff-grid{grid-template-columns:1fr;} }
+  .diff-item{background:var(--ink); padding:32px 28px;}
+  .diff-item h3{font-family:'Bebas Neue', sans-serif; font-size:21px; margin-bottom:10px; color:var(--paper); letter-spacing:0.02em;}
+  .diff-item p{font-size:14px; color:#B9B4A8; line-height:1.6;}
+  .diff-num{font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--leader); margin-bottom:14px; display:block;}
+
+  /* ---------- portfolio ---------- */
+  .reel{display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
+  @media (max-width:900px){ .reel{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:520px){ .reel{grid-template-columns:1fr;} }
+  .frame{
+    border:1px solid var(--rule); border-radius:3px; padding:22px 18px; background:#fff;
+    position:relative; min-height:190px; display:flex; flex-direction:column; justify-content:space-between;
+  }
+  .frame .sprocket{
+    position:absolute; top:0; left:14px; right:14px; height:8px;
+    background-image:repeating-linear-gradient(90deg, var(--rule) 0 6px, transparent 6px 16px);
+  }
+  .frame .stat{font-family:'Bebas Neue', sans-serif; font-size:34px; color:var(--leader); line-height:1;}
+  .frame .stat-label{font-family:'JetBrains Mono', monospace; font-size:10.5px; color:var(--mute); letter-spacing:0.08em; text-transform:uppercase; margin-top:6px;}
+  .frame h4{font-family:'Bebas Neue', sans-serif; font-size:18px; margin-top:14px; letter-spacing:0.01em;}
+  .frame p{font-size:12.8px; color:var(--mute); line-height:1.55; margin-top:6px;}
+
+  /* ---------- pacotes ---------- */
+  .plans{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  @media (max-width:900px){ .plans{grid-template-columns:1fr; max-width:420px; margin:0 auto;} }
+  .plan{
+    border:1px solid var(--rule); border-radius:3px; background:#fff; overflow:hidden;
+    display:flex; flex-direction:column;
+  }
+  .plan.featured{border-color:var(--leader); box-shadow:0 20px 45px -30px rgba(214,64,44,0.5);}
+  .plan-head{padding:26px 24px 22px; border-bottom:1px solid var(--rule);}
+  .plan.featured .plan-head{background:var(--ink);}
+  .plan-tag{font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:0.1em; color:var(--leader-dark); text-transform:uppercase;}
+  .plan.featured .plan-tag{color:var(--amber);}
+  .plan-name{font-family:'Bebas Neue', sans-serif; font-size:26px; margin-top:6px; letter-spacing:0.02em;}
+  .plan.featured .plan-name{color:var(--paper);}
+  .plan-price{font-family:'JetBrains Mono', monospace; font-size:13px; color:var(--mute); margin-top:14px;}
+  .plan.featured .plan-price{color:#B9B4A8;}
+  .plan-body{padding:22px 24px 26px; flex:1; display:flex; flex-direction:column;}
+  .plan-body ul{list-style:none; flex:1;}
+  .plan-body li{
+    font-size:13.6px; padding:8px 0; border-bottom:1px dashed var(--rule);
+    display:flex; gap:10px; align-items:flex-start;
+  }
+  .plan-body li:last-child{border-bottom:none;}
+  .plan-body li::before{content:'—'; color:var(--leader); font-weight:700;}
+  .plan-cta{
+    margin-top:20px; text-align:center; padding:12px; border:1.5px solid var(--ink);
+    border-radius:2px; font-weight:700; font-size:13.5px; transition:all .2s;
+  }
+  .plan.featured .plan-cta{background:var(--leader); border-color:var(--leader); color:#fff;}
+  .plan-cta:hover{background:var(--ink); color:#fff;}
+  .plan.featured .plan-cta:hover{background:var(--leader-dark);}
+
+  .plans-note{margin-top:26px; font-size:13px; color:var(--mute); text-align:center;}
+
+  /* ---------- final cta ---------- */
+  .final{
+    background:var(--ink); color:var(--paper); text-align:center; padding:90px 0;
+    position:relative; overflow:hidden;
+  }
+  .final::before{
+    content:''; position:absolute; top:-40%; left:50%; transform:translateX(-50%);
+    width:600px; height:600px; border-radius:50%;
+    background:radial-gradient(circle, rgba(214,64,44,0.18) 0%, transparent 70%);
+  }
+  .final-inner{position:relative;}
+  .final h2{font-size:clamp(32px,5.4vw,58px); max-width:760px; margin:0 auto 22px;}
+  .final p{color:#B9B4A8; font-size:16px; margin-bottom:34px;}
+  .final .cta-row{justify-content:center;}
+  .handles{margin-top:44px; display:flex; gap:28px; justify-content:center; flex-wrap:wrap; font-family:'JetBrains Mono', monospace; font-size:13px;}
+  .handles a{color:#B9B4A8; border-bottom:1px solid rgba(185,180,168,0.35); padding-bottom:2px; transition:color .2s;}
+  .handles a:hover{color:var(--paper);}
+
+  footer{padding:30px 0; text-align:center; font-size:12.5px; color:var(--mute); font-family:'JetBrains Mono', monospace;}
+
+  /* reveal on scroll (progressive enhancement — content visible by default) */
+  .reveal{transition:opacity .6s ease, transform .6s ease;}
+  .reveal.pre{opacity:0; transform:translateY(18px);}
+  .reveal.in{opacity:1; transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<div class="top-rule"></div>
+
+<header class="wrap">
+  <nav>
+    <div class="logo">321<span>takes</span></div>
+    <div class="nav-links">
+      <a href="#como">Como fazemos</a>
+      <a href="#portfolio">Portfólio</a>
+      <a href="#pacotes">Pacotes</a>
+    </div>
+    <a class="nav-cta" href="#contato">Fale no WhatsApp</a>
+  </nav>
+</header>
+
+<section class="hero wrap">
+  <div>
+    <div class="eyebrow">Produção de vídeo + gestão de redes sociais</div>
+    <h1>SUA REDE<br>SOCIAL COMO<br><em>CANAL DE VENDAS</em></h1>
+    <p class="sub">Filmagem profissional, edição e gestão de conteúdo para clínicas, comércios e pequenas empresas que querem resultado de verdade nas redes — não só posts bonitos.</p>
+    <div class="cta-row">
+      <a class="btn-primary" href="#contato">Fale no WhatsApp →</a>
+      <a class="btn-ghost" href="#portfolio">Ver portfólio</a>
+    </div>
+  </div>
+  <div class="leader-wrap">
+    <div>
+      <div class="leader">
+        <svg viewBox="0 0 100 100">
+          <circle class="ticks" cx="50" cy="50" r="46" fill="none" stroke-dasharray="1 5.7"/>
+          <line class="cross" x1="50" y1="6" x2="50" y2="16"/>
+          <line class="cross" x1="50" y1="84" x2="50" y2="94"/>
+          <line class="cross" x1="6" y1="50" x2="16" y2="50"/>
+          <line class="cross" x1="84" y1="50" x2="94" y2="50"/>
+          <circle class="wipe" cx="50" cy="50" r="38"/>
+        </svg>
+        <div class="leader-number n3">3</div>
+        <div class="leader-number n2">2</div>
+        <div class="leader-number n1">1</div>
+        <div class="leader-number action naction">ACTION</div>
+      </div>
+      <div class="leader-caption">321 — pronto pra gravar</div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><hr class="rule"></div>
+
+<section id="como" class="wrap reveal">
+  <div class="section-head">
+    <div class="section-tag">O processo</div>
+    <h2>Como a gente trabalha</h2>
+    <p>Três etapas, do diagnóstico ao resultado mensurado — sem pular nenhuma.</p>
+  </div>
+  <div class="takes">
+    <div class="take-card">
+      <span class="take-label">TAKE 01 — DIAGNÓSTICO</span>
+      <h3>Entendemos sua rede</h3>
+      <p>Analisamos sua presença atual: o que trava o engajamento, o que falta na estratégia e o que pode atrair mais clientes de verdade.</p>
+    </div>
+    <div class="take-card">
+      <span class="take-label">TAKE 02 — PRODUÇÃO</span>
+      <h3>Filmamos e editamos</h3>
+      <p>Câmera profissional, gimbal e edição cuidadosa — sem banco de imagem, sem template genérico. Conteúdo feito pro seu negócio.</p>
+    </div>
+    <div class="take-card">
+      <span class="take-label">TAKE 03 — RESULTADO</span>
+      <h3>Postamos e reportamos</h3>
+      <p>Gestão de postagem e relatório mês a mês, mostrando a evolução real — não só número de curtida.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band reveal">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Por que a 321takes</div>
+      <h2>O que nos diferencia</h2>
+    </div>
+    <div class="diff-grid">
+      <div class="diff-item">
+        <span class="diff-num">[ 01 ]</span>
+        <h3>Produção de verdade</h3>
+        <p>Filmagem profissional com gimbal — não banco de imagem, não template pronto.</p>
+      </div>
+      <div class="diff-item">
+        <span class="diff-num">[ 02 ]</span>
+        <h3>Automação própria</h3>
+        <p>Sistema de postagem testado e em produção, sem depender de agendamento manual.</p>
+      </div>
+      <div class="diff-item">
+        <span class="diff-num">[ 03 ]</span>
+        <h3>Diagnóstico + relatório</h3>
+        <p>Análise da rede antes de começar, e evolução mensurada mês a mês.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="portfolio" class="wrap reveal">
+  <div class="section-head">
+    <div class="section-tag">Portfólio</div>
+    <h2>Trabalho que já roda</h2>
+    <p>Alguns cases reais de produção e gestão de conteúdo.</p>
+  </div>
+  <div class="reel">
+    <div class="frame">
+      <div class="sprocket"></div>
+      <div>
+        <div class="stat">1M+</div>
+        <div class="stat-label">Visualizações</div>
+      </div>
+      <div>
+        <h4>Post orgânico</h4>
+        <p>Um único post de esporte amador ultrapassou 1 milhão de views — prova de que sabemos fazer conteúdo que roda.</p>
+      </div>
+    </div>
+    <div class="frame">
+      <div class="sprocket"></div>
+      <div>
+        <div class="stat">16</div>
+        <div class="stat-label">Patrocinadores</div>
+      </div>
+      <div>
+        <h4>Automação de postagem</h4>
+        <p>Sistema próprio publicando Stories automaticamente para clubes e patrocinadores parceiros.</p>
+      </div>
+    </div>
+    <div class="frame">
+      <div class="sprocket"></div>
+      <div>
+        <div class="stat">2min</div>
+        <div class="stat-label">Vídeo institucional</div>
+      </div>
+      <div>
+        <h4>Clínica de estética</h4>
+        <p>Documentação completa de um dia de treinamento em laser de CO₂, do bastidor à entrega final.</p>
+      </div>
+    </div>
+    <div class="frame">
+      <div class="sprocket"></div>
+      <div>
+        <div class="stat">100%</div>
+        <div class="stat-label">Conteúdo próprio</div>
+      </div>
+      <div>
+        <h4>Era Doce</h4>
+        <p>Conteúdo de produto e marca pro dia a dia de uma confeitaria local.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pacotes" class="wrap reveal">
+  <div class="section-head">
+    <div class="section-tag">Pacotes</div>
+    <h2>Um pacote pro tamanho do seu negócio</h2>
+    <p>Todos incluem diagnóstico inicial, filmagem profissional e relatório de evolução. Contrato com permanência mínima de 3 meses.</p>
+  </div>
+  <div class="plans">
+    <div class="plan">
+      <div class="plan-head">
+        <div class="plan-tag">Para começar</div>
+        <div class="plan-name">Início</div>
+        <div class="plan-price">valores sob consulta</div>
+      </div>
+      <div class="plan-body">
+        <ul>
+          <li>Diagnóstico inicial + plano de ação</li>
+          <li>1 dia de filmagem por mês</li>
+          <li>4 Reels editados</li>
+          <li>4 posts para o feed</li>
+          <li>Stories prontos pra postar</li>
+          <li>Relatório trimestral</li>
+        </ul>
+        <a class="plan-cta" href="#contato">Solicitar proposta</a>
+      </div>
+    </div>
+    <div class="plan featured">
+      <div class="plan-head">
+        <div class="plan-tag">★ Mais escolhido</div>
+        <div class="plan-name">Presença</div>
+        <div class="plan-price">valores sob consulta</div>
+      </div>
+      <div class="plan-body">
+        <ul>
+          <li>Diagnóstico + ajuste mensal de estratégia</li>
+          <li>2 dias de filmagem por mês</li>
+          <li>8 Reels editados</li>
+          <li>Stories semanais</li>
+          <li>Postagem incluída (agendada)</li>
+          <li>Resposta a comentários/DMs</li>
+          <li>Relatório mensal de evolução</li>
+        </ul>
+        <a class="plan-cta" href="#contato">Solicitar proposta</a>
+      </div>
+    </div>
+    <div class="plan">
+      <div class="plan-head">
+        <div class="plan-tag">Presença total</div>
+        <div class="plan-name">Estúdio</div>
+        <div class="plan-price">valores sob consulta</div>
+      </div>
+      <div class="plan-body">
+        <ul>
+          <li>Diagnóstico + estratégia de funil</li>
+          <li>Filmagem semanal (4 dias/mês)</li>
+          <li>Conteúdo p/ Instagram + TikTok</li>
+          <li>Postagem 100% automatizada</li>
+          <li>Relatório mensal com métricas de conversão</li>
+          <li>Prioridade de agenda</li>
+        </ul>
+        <a class="plan-cta" href="#contato">Solicitar proposta</a>
+      </div>
+    </div>
+  </div>
+  <p class="plans-note">Valores personalizados conforme escopo — fale com a gente pra receber sua proposta.</p>
+</section>
+
+<section id="contato" class="final">
+  <div class="wrap final-inner">
+    <h2>Bora gravar a próxima cena<br>do seu negócio?</h2>
+    <p>Resposta em até 1 dia útil. Sem compromisso pra conversar.</p>
+    <div class="cta-row">
+      <a class="btn-primary" href="https://wa.me/5511940168916" target="_blank" rel="noopener">Fale no WhatsApp →</a>
+    </div>
+    <div class="handles">
+      <a href="https://instagram.com/321takes" target="_blank" rel="noopener">@321takes — esporte amador</a>
+      <a href="#" target="_blank" rel="noopener">@321takes.biz — em breve</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">321takes © 2026 — produção de vídeo e gestão de redes sociais</div>
+</footer>
+
+<script>
+  // Progressive enhancement: only hide-then-reveal if IntersectionObserver is available.
+  // Content is visible by default, so nothing breaks if JS fails or runs late.
+  if ('IntersectionObserver' in window){
+    const targets = document.querySelectorAll('.reveal');
+    targets.forEach(el => el.classList.add('pre'));
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if(e.isIntersecting){ e.target.classList.add('in'); e.target.classList.remove('pre'); observer.unobserve(e.target); }
+      });
+    }, {threshold: 0.1, rootMargin: '0px 0px -40px 0px'});
+    targets.forEach(el => observer.observe(el));
+  }
+</script>
+
+</body>
+</html>
